@@ -4,6 +4,9 @@ const aunthenticationRouterHOF = require('../routers/authenticationRouter');
 const bcrypt = require('bcrypt');
 const jwtToken = require('jsonwebtoken');
 const router = new express.Router();
+const multer = require('multer');
+
+
 
 // create user route
 
@@ -107,6 +110,89 @@ router.post('/users/updateUser/me', async (req, res) => {
     } catch (e) {
         if(e.kind === 'ObjectId') res.status(404).send('Invalid User Id. User Not Found.');
         res.status(400).send(e);
+    }
+});
+
+//configure multer for profile image
+
+const uploadImg = multer({
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter(req, file, cb) {
+        if(!file.originalname.match(/\.(jpg|png|jpeg)$/)) {
+            cb(new Error('Upload a file with valid Image extension'), false);
+        }
+        cb(undefined, true);
+    }
+});
+
+// upload profile image
+/* Request Schema
+
+{
+    profileImg: <image binary data>
+}
+
+*/
+router.post('/users/me/uploadProfileImage', uploadImg.single('profileImg'), async (req,res) => {
+    req.user.avatar =  req.file.buffer;
+    await req.user.save()
+    res.send();
+}, ( error, req, res, next) => {
+    res.status(400).send({error: error.message});
+});
+
+// delete own profile Image
+
+router.delete('/users/me/deleteProfileImg', async (req, res) => {
+    try {
+        req.user.avatar = undefined;
+        await req.user.save();
+        res.send();
+    } catch(e) {
+        res.status(500).send(e);
+    }
+})
+
+// get own profile Image
+
+router.get('/users/me/getProfileImg', (req, res) => {
+    try {
+        
+        if(!req.user.avatar) {
+            throw new Error('User has no profile Image');
+        }
+        res.set('Content-Type', 'image/jpg');
+        res.send(req.user.avatar);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+})
+
+// get profile image by Id 
+router.get('/users/:id/getProfileImg', async (req, res) => {
+    try{
+        if(req.user.isSuperAdmin) {
+
+            const user = await UserModel.findById(req.params.id);
+    
+            if(!user) {
+                throw new Error('User not found.');
+            }
+    
+            if(!user.avatar) {
+                throw new Error('User has no profile Image');
+            }
+    
+            res.set('Content-Type','image/jpg');
+            res.send(user.avatar);
+        } else {
+            throw new Error('Action forbidden');
+        }
+        
+    } catch (error) {
+        res.status(500).send(error.message);
     }
 });
 
