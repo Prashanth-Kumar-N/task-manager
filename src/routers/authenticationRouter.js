@@ -14,14 +14,18 @@ const addAutenticationRoutes  = router => {
 
         try{
             const user = await UserModel.findByCredentials(req.body.email, req.body.password);
-            const token = await user.generateToken(req.body.email, req.body.password);
+            
             if(user.status) {
                 res.status(user.status).send(user.msg);
                 return;
             }
+
+            if(user) {
+                const token = await user.generateToken(req.body.email, req.body.password);
+            }
             res.status(200).send({user, token});
         } catch (e) {
-            res.status(500).send('Something went wrong!!! Try again.')
+            res.status(500).send('Something went wrong!!! Try again.', JSON.stringify(e));
         }
     });
 
