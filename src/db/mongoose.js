@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
+const connectionURL = process.env.MONGODB_URL || 'mongodb://127.0.0.1:27017/task-manager-api';
+
+const MONGODB_URL = 'mongodb+srv://prashanth_kumar_node:sanmongodb@prashanth-node.tzaoh.mongodb.net/Prashanth-Node?retryWrites=true&w=majority';
+
+mongoose.connect(connectionURL, {
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useUnifiedTopology: true
 });
