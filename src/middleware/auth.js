@@ -1,4 +1,4 @@
-const routesNotToValidate = ['/users/login', '/users/addUser'];
+const routesNotToValidate = ['/users/login', '/users/addUser','//users/login', '//users/addUser'];
 const jwtToken = require('jsonwebtoken');
 const { UserModel, userFields } = require('../models/user.model');
 
@@ -11,7 +11,6 @@ const authMiddleware = async (req, res, next) => {
 
     try {
         if(!routesNotToValidate.includes(req.path)) {
-            console.log('---', req.path);
             const token = req.headers.authorization.split(' ')[1];
             const {id, email} = jwtToken.verify(token, secret);
             const user = await UserModel.findOne({'_id': id, 'tokens.token': token});
