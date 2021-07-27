@@ -35,6 +35,9 @@ const userSchema = new mongoose.Schema({
             if(!isValid) throw new Error('Validation Error')
         }
     },
+    avatar: {
+        type: Buffer
+    },
     tokens: [{
         token: {
             type: String,
