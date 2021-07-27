@@ -11,6 +11,7 @@ const authMiddleware = async (req, res, next) => {
 
     try {
         if(!routesNotToValidate.includes(req.path)) {
+            console.log("Route not to be validated", req.path);
             const token = req.headers.authorization.split(' ')[1];
             const {id, email} = jwtToken.verify(token, secret);
             const user = await UserModel.findOne({'_id': id, 'tokens.token': token});
@@ -22,6 +23,7 @@ const authMiddleware = async (req, res, next) => {
             req.user = user;
             next();
         } else {
+            console.log("Route to be validated", req.path, next);
             next();
         }
 
