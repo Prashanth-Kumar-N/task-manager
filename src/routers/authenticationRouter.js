@@ -20,6 +20,8 @@ const addAutenticationRoutes  = router => {
                 return;
             }
 
+            console.log(user);
+
             if(user) {
                 const token = await user.generateToken(req.body.email, req.body.password);
             }

@@ -1,4 +1,4 @@
-const routesNotToValidate = ['/users/login', '/users/addUser','//users/login', '//users/addUser'];
+const routesNotToValidate = ['/users/login', '/users/addUser'];
 const jwtToken = require('jsonwebtoken');
 const { UserModel, userFields } = require('../models/user.model');
 
