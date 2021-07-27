@@ -13,6 +13,10 @@ const Task = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    priority: {
+        type: String,
+        default: 'Gray'
+    },
     author: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
