@@ -1,6 +1,7 @@
 global.print = console.log;
 global.secret = 'thisismykey';
 const express = require('express');
+const cors = require('cors');
 const yargs = require('yargs');
 const { response } = require('express');
 const userRouter = require('../src/routers/userRoutes');
@@ -9,6 +10,9 @@ const auth = require('./middleware/auth');
 require('./db/mongoose');
 
 const app = express();
+
+// setup cors
+app.use(cors());
 
 //setup middleware
 app.use(auth);
