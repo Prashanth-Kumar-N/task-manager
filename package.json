@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --inspect-brk src",
+    "start": "node src",
+    "inspect": "node --inspect-brk src",
     "dev": "nodemon src"
   },
   "author": "",

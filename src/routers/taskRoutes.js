@@ -42,6 +42,7 @@ router.post('/tasks/create', async (req, res) => {
     {
         "filter": {
             "completed": false,
+            "priority": 'Gray'
             "pageSize": 1,
             "page": 2
         }, "sort": {
@@ -63,6 +64,10 @@ router.post('/tasks/getTasks', async (req, res) => {
 
             if(reqInfo.filter.completed) {
                 match = {completed: reqInfo.filter.completed}
+            }
+
+            if(reqInfo.filter.priority) {
+                match = {...match, priority: reqInfo.filter.priority}
             }
         }
 

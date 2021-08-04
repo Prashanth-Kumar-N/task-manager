@@ -7,8 +7,9 @@ let dbClient;
 
 const connectionUrl = 'mongodb://127.0.0.1:27017'
 const databaseName = 'to-do';
+let clientObj;
 
-MongoClient.connect(connectionUrl, {useNewUrlParser: true}, (error, client) => {
+MongoClient.connect(connectionUrl, {useNewUrlParser: true, useUnifiedTopology: true }, (error, client) => {
     if(error) return console.log('Error connecting to DB');
 
     const db = client.db(databaseName);
